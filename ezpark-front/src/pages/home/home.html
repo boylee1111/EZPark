@@ -1,0 +1,16 @@
+<ion-content padding id="main-page">
+
+  <div ion-fixed>
+
+
+
+    <img src="./assets/imgs/logo.png" id="logo">
+    <button block ion-button class="action" color="secondary" [navPush]="mapPage">View Spots</button>
+
+    <button block ion-button class="action" color="light" [navPush]="reservePage">Reserve Now by 1 click</button>
+
+    <button block ion-button icon-start clear color="light" [navPush]="historyPage" class="action">
+      <ion-icon name="ios-list-box"></ion-icon>My Reserves
+    </button>
+  </div>
+</ion-content>

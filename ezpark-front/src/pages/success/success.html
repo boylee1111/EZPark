@@ -1,0 +1,29 @@
+<!--
+  Generated template for the SuccessPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-content padding id="main-page">
+  <div ion-fixed>
+    <img src="./assets/reserved.png" id="reserve-icon">
+
+    <div id="reserve-confirm">
+      <ion-item class="reserve-detail">
+        <ion-icon no-lines name='pin' item-start></ion-icon>
+        <ion-label>Carnegie Mellon University</ion-label>
+      </ion-item>
+
+      <ion-item class="reserve-detail">>
+        <ion-icon no-lines name='calendar' item-start></ion-icon>
+        <ion-label>Feb 18 2018, 7:43 AM</ion-label>
+      </ion-item>
+    </div>
+
+
+    <button block ion-button class="action" (click)='backToMap();' color="secondary"> Back to Map</button>
+    <button block ion-button class="action" (click)='backToHistory();' color="light">View Reserves</button>
+
+  </div>
+</ion-content>

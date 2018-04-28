@@ -1,0 +1,30 @@
+page-map {
+  .scroll {
+    height: 100%
+  }
+
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+
+  .search-bar {
+    padding: 15px 20px;
+  }
+
+  .map-window {
+    .reserve-button {
+      color: white;
+      background-color: #017FFF;
+      display: block;
+      margin: auto;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+
+  }
+
+}
+

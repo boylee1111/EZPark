@@ -1,0 +1,30 @@
+page-success {
+  #main-page {
+    background-color: #017FFF;
+
+    #reserve-icon{
+      width: 60%;
+      margin:30% auto 20px auto;
+      display: block;
+    }
+
+    button.action {
+      width: 80%;
+      margin: 20px auto;
+      height: 3.2em;
+    }
+
+    #reserve-confirm{
+      margin-bottom: 70px;
+    }
+
+    .reserve-detail {
+      background-color: transparent;
+      color: white;
+      padding: 0 15%;
+    }
+  }
+}
+
+
+

@@ -1,0 +1,22 @@
+page-home {
+  #main-page {
+    background-color: #017FFF;
+
+    #logo{
+      width: 60%;
+      margin: 35% auto;
+      display: block;
+    }
+
+    #reserve-history {
+      position: absolute;
+      right: 10px;
+    }
+
+    button.action {
+      width: 80%;
+      margin: 20px auto;
+      height: 3.2em;
+    }
+  }
+}
