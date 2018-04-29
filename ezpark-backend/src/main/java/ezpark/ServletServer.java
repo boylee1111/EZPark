@@ -70,7 +70,7 @@ public class ServletServer {
     
     public static boolean isValidParameter(String ... params) {
     		for (String s: params) {
-    			if (s.isEmpty() || s==null) {
+    			if (s==null || s.isEmpty()) {
     				return false;
     			} 
     		}
