@@ -43,7 +43,7 @@ public class Login extends DBHttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         setAccessControlHeaders(resp);
-        
+
         PrintWriter writer = resp.getWriter();
         String username = req.getParameter("username");
         String password = req.getParameter("password");
