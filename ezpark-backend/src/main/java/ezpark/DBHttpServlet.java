@@ -3,6 +3,7 @@ package ezpark;
 import java.beans.PropertyVetoException;
 
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
@@ -27,5 +28,11 @@ public class DBHttpServlet extends HttpServlet {
         cpds.setJdbcUrl(URL);
         cpds.setUser(DB_USER);
         cpds.setPassword(DB_PWD);
+    }
+
+    void setAccessControlHeaders(HttpServletResponse resp) {
+        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:8100");
+        resp.setHeader("Access-Control-Allow-Methods", "GET, POST");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
     }
 }

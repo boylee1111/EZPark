@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.Base64;
+import java.util.Enumeration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -30,6 +31,14 @@ public class Signup extends DBHttpServlet {
         message = config.getInitParameter(MESSAGE);
     }
 
+    // for Preflight
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        setAccessControlHeaders(resp);
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
     @Override
     protected void doGet(final HttpServletRequest req, final HttpServletResponse resp)
             throws ServletException, IOException {
@@ -42,7 +51,21 @@ public class Signup extends DBHttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
+        setAccessControlHeaders(resp);
         PrintWriter writer = resp.getWriter();
+
+        Enumeration<String> headerNames = req.getHeaderNames();
+        while(headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            System.out.println("Header Name - " + headerName + ", Value - " + req.getHeader(headerName));
+        }
+
+        Enumeration<String> params = req.getParameterNames();
+        while(params.hasMoreElements()){
+            String paramName = params.nextElement();
+            System.out.println("Parameter Name - "+paramName+", Value - " + req.getParameter(paramName));
+        }
+
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String passwordHash;
