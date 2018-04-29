@@ -3,9 +3,8 @@ package ezpark;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.MessageFormat;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -67,12 +66,13 @@ public class CancelReserve extends DBHttpServlet {
     }
 
     private boolean delete(String id, Connection conn) throws SQLException {
-        String updateQuery = MessageFormat.format(
-                "UPDATE reservations SET isCanceled=true WHERE id={0};",
-                id);
+        String updateQuery =
+                "UPDATE reservations SET isCanceled=true WHERE id=?;";
+        PreparedStatement preparedStatement =
+                conn.prepareStatement(updateQuery);
+        preparedStatement.setLong(1, Long.parseLong(id));
 
-        Statement updateStatement = conn.createStatement();
-        updateStatement.executeUpdate(updateQuery);
+        preparedStatement.executeUpdate();
         return true;
     }
 }

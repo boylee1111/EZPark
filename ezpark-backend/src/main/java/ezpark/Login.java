@@ -6,10 +6,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.MessageFormat;
 import java.util.Base64;
 
 import javax.servlet.ServletConfig;
@@ -84,16 +83,14 @@ public class Login extends DBHttpServlet {
     }
 
     private boolean authenticate(String username, String passHash, Connection conn) throws SQLException {
-        String checkQuery = MessageFormat.format(
-                "SELECT * FROM user WHERE username=''{0}'' and password=''{1}''",
-                username, passHash);
+        String checkQuery = "SELECT * FROM user WHERE username=? and " +
+                "password=?;";
+        PreparedStatement preparedStatement = conn.prepareStatement(checkQuery);
+        preparedStatement.setString(1, username);
+        preparedStatement.setString(2, passHash);
 
-        Statement statement = conn.createStatement();
-        ResultSet usersResultSet = statement.executeQuery(checkQuery);
+        ResultSet usersResultSet = preparedStatement.executeQuery();
 
-        if (usersResultSet.next()) {
-            return true;
-        }
-        return false;
+        return usersResultSet.next();
     }
 }

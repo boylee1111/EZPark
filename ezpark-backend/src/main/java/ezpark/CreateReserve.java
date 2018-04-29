@@ -3,10 +3,10 @@ package ezpark;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.MessageFormat;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -77,11 +77,12 @@ public class CreateReserve extends DBHttpServlet {
             return -1;
         }
 
-        String locationQuery = MessageFormat.format(
-                "SELECT * FROM spot WHERE location_name=''{0}''",
-                location);
-        Statement locationQueryStatement = conn.createStatement();
-        ResultSet resultSet = locationQueryStatement.executeQuery(locationQuery);
+        String locationQuery = "SELECT * FROM spot WHERE location_name=?;";
+        PreparedStatement locationPrepareStatement =
+                conn.prepareStatement(locationQuery);
+        locationPrepareStatement.setString(1, location);
+
+        ResultSet resultSet = locationPrepareStatement.executeQuery();
         // Not exist spot location
         if (!resultSet.next()) {
             return -1;
@@ -94,28 +95,34 @@ public class CreateReserve extends DBHttpServlet {
         }
 
         // Create reservation and update available spots
-        String insertQuery = MessageFormat.format(
+        String insertQuery =
                 "insert into reservation (username, location, time, " +
-                        "space_hold_minutes) values (''{0}'', ''{1}'', " +
-                        "''{2}'', ''{3}'');",
-                username, location, date, spaces);
-        Statement insertStatement = conn.createStatement();
-        insertStatement.executeUpdate(
-                insertQuery, Statement.RETURN_GENERATED_KEYS);
+                        "space_hold_minutes) values (?, ?, ?, ?);";
+        PreparedStatement insertPrepareStatement = conn.prepareStatement(
+                insertQuery,
+                Statement.RETURN_GENERATED_KEYS);
+        insertPrepareStatement.setString(1, username);
+        insertPrepareStatement.setString(2, location);
+        insertPrepareStatement.setString(3, date);
+        insertPrepareStatement.setString(4, spaces);
+
+        insertPrepareStatement.executeUpdate();
+
         // Get generated id
         long id = -1;
-        ResultSet generatedKey = insertStatement.getGeneratedKeys();
+        ResultSet generatedKey = insertPrepareStatement.getGeneratedKeys();
         if (generatedKey.next()) {
             id = generatedKey.getLong(1);
         }
 
-        String updateQuery = MessageFormat.format(
-                "UPDATE spot SET available_spots={0} WHERE " +
-                        "location_name=''{1}'';",
-                availableSpots - 1,
-                location);
-        Statement updateStatement = conn.createStatement();
-        updateStatement.executeUpdate(updateQuery);
+        // Update available spot
+        String updateQuery =
+                "UPDATE spot SET available_spots=? WHERE location_name=?;";
+        PreparedStatement updatePrepareStatement =
+                conn.prepareStatement(updateQuery);
+        updatePrepareStatement.setInt(1, availableSpots - 1);
+        updatePrepareStatement.setString(2, location);
+        updatePrepareStatement.executeUpdate();
 
         return id;
     }

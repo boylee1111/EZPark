@@ -3,10 +3,9 @@ package ezpark;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.MessageFormat;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -68,13 +67,15 @@ public class GetSpot extends DBHttpServlet {
     }
 
     private JSONArray getSpots(int x, int y, Connection conn) throws SQLException {
-        String searchQuery = MessageFormat.format(
-                "SELECT * FROM spot WHERE x > {0} and x < {1} and y > {2} and y < {3}",
-                x - COORDINATE_OFFSET, x + COORDINATE_OFFSET,
-                y - COORDINATE_OFFSET, y + COORDINATE_OFFSET);
+        String searchQuery =
+                "SELECT * FROM spot WHERE x > ? and x < ? and y > ? and y < ?;";
+        PreparedStatement preparedStatement = conn.prepareStatement(searchQuery);
+        preparedStatement.setDouble(1, x - COORDINATE_OFFSET);
+        preparedStatement.setDouble(2, x + COORDINATE_OFFSET);
+        preparedStatement.setDouble(3, y - COORDINATE_OFFSET);
+        preparedStatement.setDouble(4, y + COORDINATE_OFFSET);
 
-        Statement statement = conn.createStatement();
-        ResultSet spotsSet = statement.executeQuery(searchQuery);
+        ResultSet spotsSet = preparedStatement.executeQuery();
 
         JSONArray spotsJsonArray = new JSONArray();
         while (spotsSet.next()) {

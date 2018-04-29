@@ -3,11 +3,10 @@ package ezpark;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletConfig;
@@ -71,12 +70,13 @@ public class ListReserve extends DBHttpServlet {
     }
 
     private JSONArray listReservations(String username, Connection conn) throws SQLException {
-        String searchQuery = MessageFormat.format(
-                "SELECT * FROM reservation WHERE username=''{0}'' and isCanceled=0;",
-                username);
+        String searchQuery =
+                "SELECT * FROM reservation WHERE username=? and isCanceled=0;";
+        PreparedStatement preparedStatement =
+                conn.prepareStatement(searchQuery);
+        preparedStatement.setString(1, username);
 
-        Statement statement = conn.createStatement();
-        ResultSet reservationsSet = statement.executeQuery(searchQuery);
+        ResultSet reservationsSet = preparedStatement.executeQuery();
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 

@@ -6,9 +6,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.MessageFormat;
 import java.util.Base64;
 import java.util.Enumeration;
 
@@ -47,15 +46,15 @@ public class Signup extends DBHttpServlet {
         PrintWriter writer = resp.getWriter();
 
         Enumeration<String> headerNames = req.getHeaderNames();
-        while(headerNames.hasMoreElements()) {
+        while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
             System.out.println("Header Name - " + headerName + ", Value - " + req.getHeader(headerName));
         }
 
         Enumeration<String> params = req.getParameterNames();
-        while(params.hasMoreElements()){
+        while (params.hasMoreElements()) {
             String paramName = params.nextElement();
-            System.out.println("Parameter Name - "+paramName+", Value - " + req.getParameter(paramName));
+            System.out.println("Parameter Name - " + paramName + ", Value - " + req.getParameter(paramName));
         }
 
         String username = req.getParameter("username");
@@ -106,12 +105,14 @@ public class Signup extends DBHttpServlet {
             email = (email == null ? "" : email.trim());
             phone = (phone == null ? "" : phone.trim());
 
-            String insertQuery = MessageFormat.format(
-                    "insert into user (username, password, email, phone) values " +
-                            "(''{0}'',''{1}'',''{2}'',''{3}'');",
-                    username, passHash, email, phone);
-            Statement statement = conn.createStatement();
-            statement.executeUpdate(insertQuery);
+            String insertQuery = "insert into user (username, password, " +
+                    "email, phone) values (?, ?, ?, ?);";
+            PreparedStatement pstmt = conn.prepareCall(insertQuery);
+            pstmt.setString(1, username);
+            pstmt.setString(2, passHash);
+            pstmt.setString(3, email);
+            pstmt.setString(4, phone);
+            pstmt.executeUpdate();
             return true;
         }
 
