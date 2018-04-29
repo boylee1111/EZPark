@@ -1,0 +1,33 @@
+page-signup {
+  #signup-page {
+    background-color: #017FFF;
+
+    .fixed-content{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #logo {
+      width: 35%;
+      margin: 10% auto;
+      display: block;
+    }
+
+    #signup-panel {
+      border-radius: 2em;
+      ion-list{
+        border-radius: 1em;
+        overflow: hidden;
+        margin-bottom: 0;
+        ion-item:last-child {
+          padding-bottom: 20px;
+        }
+      }
+    }
+
+    button.action {
+      height: 3.2em;
+    }
+  }
+}

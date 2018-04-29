@@ -4,6 +4,9 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
+import { HTTP } from '@ionic-native/http';
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -13,6 +16,9 @@ import { SuccessPage } from '../pages/success/success'
 import { HistoryPage } from '../pages/history/history'
 import { SettingsPage } from '../pages/settings/settings'
 import { QuickRevPage } from '../pages/quick-rev/quick-rev';
+import { SignupPage } from '../pages/signup/signup';
+import { SigninPage }  from '../pages/signin/signin';
+import { Global } from './global';
 
 @NgModule({
   declarations: [
@@ -23,10 +29,14 @@ import { QuickRevPage } from '../pages/quick-rev/quick-rev';
     SuccessPage,
     HistoryPage,
     SettingsPage,
-    QuickRevPage
+    QuickRevPage,
+    SignupPage,
+    SigninPage
   ],
   imports: [
     BrowserModule,
+    HttpModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -38,12 +48,16 @@ import { QuickRevPage } from '../pages/quick-rev/quick-rev';
     SuccessPage,
     HistoryPage,
     SettingsPage,
-    QuickRevPage
+    QuickRevPage,
+    SignupPage,
+    SigninPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     Geolocation,
+    Global,
+    HTTP,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
