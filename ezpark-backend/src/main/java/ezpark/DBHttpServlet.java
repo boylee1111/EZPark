@@ -1,8 +1,11 @@
 package ezpark;
 
 import java.beans.PropertyVetoException;
+import java.io.IOException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -28,6 +31,15 @@ public class DBHttpServlet extends HttpServlet {
         cpds.setJdbcUrl(URL);
         cpds.setUser(DB_USER);
         cpds.setPassword(DB_PWD);
+    }
+
+    // for Preflight
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException
+    {
+        setAccessControlHeaders(resp);
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
     void setAccessControlHeaders(HttpServletResponse resp) {

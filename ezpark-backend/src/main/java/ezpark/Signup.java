@@ -31,14 +31,6 @@ public class Signup extends DBHttpServlet {
         message = config.getInitParameter(MESSAGE);
     }
 
-    // for Preflight
-    @Override
-    protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        setAccessControlHeaders(resp);
-        resp.setStatus(HttpServletResponse.SC_OK);
-    }
-
     @Override
     protected void doGet(final HttpServletRequest req, final HttpServletResponse resp)
             throws ServletException, IOException {
