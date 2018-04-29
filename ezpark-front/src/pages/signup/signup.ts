@@ -20,10 +20,10 @@ import { HomePage } from '../home/home';
 export class SignupPage {
 
   user = {
-    username: "abc",
-    password: "bef",
-    email: "dd",
-    phone: "adfe"
+    username: "",
+    password: "",
+    email: "",
+    phone: ""
   };
 
   homePage = HomePage;
@@ -70,8 +70,8 @@ export class SignupPage {
         loader.dismiss();
         console.log(resp);
 
-        if (!resp.success) {
-          this.showAlert(resp.error);
+        if (!resp['success']) {
+          this.showAlert(resp['error']);
 
         } else {
           this.global.USER_NAME = this.user.username;
