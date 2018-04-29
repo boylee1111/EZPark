@@ -2,9 +2,9 @@
 
   <div ion-fixed>
 
-    <img src="./assets/imgs/logo.png" id="logo">
 
     <div padding id="signup-panel">
+      <img src="./assets/imgs/logo.png" id="logo">
 
       <ion-list>
 
@@ -34,7 +34,9 @@
 
     <div padding>
       <button block ion-button class="action" color="secondary" (click)='signup();'>Sign Up</button>
+      <div id="already-user"> <span>Already a User?</span> <button ion-button outline color="light" [navPush]="signinPage">Sign In</button></div>
     </div>
+
 
   </div>
 

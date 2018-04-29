@@ -1,3 +1,56 @@
 page-signin {
+  #signin-page {
+    background-color: #017FFF;
+    text-align: center;
 
+    [ion-fixed] {
+      position: relative;
+    }
+
+    [padding] {
+      padding-bottom: 2%;
+      padding-top: 2%;
+    }
+
+    .fixed-content{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #logo {
+      width: 35%;
+      margin: 5% auto;
+      display: block;
+    }
+
+    #signin-panel {
+      border-radius: 2em;
+
+      ion-list{
+        border-radius: 1em;
+        overflow: hidden;
+        margin-bottom: 0;
+        ion-item:last-child {
+          padding-bottom: 20px;
+        }
+      }
+    }
+
+    #new-user {
+      color: white;
+      span{
+        vertical-align: middle;
+      }
+      button {
+        margin: 1em 0.5em;
+        height: 2.4em;
+        vertical-align: middle;
+      }
+    }
+
+    button.action {
+      height: 3.2em;
+    }
+  }
 }
