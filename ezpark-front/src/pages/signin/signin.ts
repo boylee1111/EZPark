@@ -38,6 +38,10 @@ export class SigninPage {
     console.log('ionViewDidLoad SigninPage');
   }
 
+  gsignin() {
+    console.log("Signin with google");
+  }
+
   signin() {
     let loader = this.loadingCtrl.create({
       content: "Processing..."

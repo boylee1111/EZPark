@@ -20,13 +20,20 @@
 
       </ion-list>
 
+      <div id="social-media">
+        <span>Login with</span>
+        <button small ion-button icon-only  (click)='gsignin();'>
+          <ion-icon name="logo-google"></ion-icon>
+        </button>
+        <button ion-button icon-only small>
+          <ion-icon name="logo-facebook"></ion-icon>
+        </button>
+      </div>
+
     </div>
 
     <div padding>
-
-
       <button block ion-button class="action" color="secondary" (click)='signin();'>Sign In</button>
-
       <div id="new-user"> <span>New User?</span> <button ion-button outline color="light" [navPush]="signupPage">Sign Up</button></div>
 
     </div>

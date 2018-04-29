@@ -5,6 +5,7 @@ page-signin {
 
     [ion-fixed] {
       position: relative;
+      width: 100%;
     }
 
     [padding] {
@@ -33,6 +34,15 @@ page-signin {
         margin-bottom: 0;
         ion-item:last-child {
           padding-bottom: 20px;
+        }
+      }
+
+      #social-media {
+        margin-top: 2%;
+        text-align: right;
+        color: white;
+        span, button {
+          vertical-align: middle;
         }
       }
     }
