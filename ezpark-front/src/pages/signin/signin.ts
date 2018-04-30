@@ -45,9 +45,17 @@ export class SigninPage {
 
   fsignin() {
     console.log("Signin with fb");
+    let loader = this.loadingCtrl.create({
+      content: "Processing..."
+    });
+
+    loader.present();
+
     this.fb.login(['public_profile', 'user_friends', 'email'])
       .then((res: FacebookLoginResponse) => {
         console.log('Logged into Facebook!', res);
+        loader.dismiss();
+
         this.global.ACCESS_TOKEN = res.authResponse.accessToken;
         this.navCtrl.push(this.homePage).then(() => {
           let from = 0;
@@ -57,15 +65,23 @@ export class SigninPage {
 
       }).catch(err => {
         console.log('Error logging into Facebook', err);
-        this.showAlert("Oooops! an Error occurred when making the request. Please check your connection.");
+        loader.dismiss();
+        this.showAlert("Oooops! an Error occurred when signin with Facebook.");
       });
   }
 
   gsignin() {
     console.log("Signin with google");
+    let loader = this.loadingCtrl.create({
+      content: "Processing..."
+    });
+
+    loader.present();
+
     this.googlePlus.login({})
       .then(res => {
         console.log(res);
+        loader.dismiss();
         this.global.USER_NAME = res['displayName'];
         this.global.ACCESS_TOKEN = res['accessToken'];
         this.navCtrl.push(this.homePage).then(() => {
@@ -77,7 +93,8 @@ export class SigninPage {
       })
       .catch(err => {
         console.error(err);
-        this.showAlert("Oooops! an Error occurred when making the request. Please check your connection.");
+        loader.dismiss();
+        this.showAlert("Oooops! an Error occurred when signin with Google.");
       });
   }
 

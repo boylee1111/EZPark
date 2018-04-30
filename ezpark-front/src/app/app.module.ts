@@ -9,6 +9,8 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
+
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -62,6 +64,7 @@ import { Global } from './global';
     Global,
     HTTP,
     Facebook,
+    LaunchNavigator,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

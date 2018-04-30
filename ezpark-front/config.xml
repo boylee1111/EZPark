@@ -92,7 +92,8 @@
     </plugin>
     <plugin name="cordova-plugin-facebook4" spec="^2.0.1">
         <variable name="APP_ID" value="433161433801218" />
-        <variable name="APP_NAME" value="ezpark" />
+        <variable name="APP_NAME" value="ezpark--save" />
     </plugin>
+    <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^4.2.0" />
     <engine name="ios" spec="~4.5.4" />
 </widget>
