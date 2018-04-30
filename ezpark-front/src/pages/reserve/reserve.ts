@@ -21,7 +21,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class ReservePage {
 
   reserveTime = {
-    month: '2018/02/28',
+    month: '2018-02-28',
     timeStarts: '07:43',
     duration: 1.5
   };
@@ -39,6 +39,28 @@ export class ReservePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReservePage');
+
+    var forReserveDate = new Date();
+    forReserveDate.setTime(forReserveDate.getTime() + (30 * 60 * 1000));
+
+    var year = forReserveDate.getFullYear()
+    var month = forReserveDate.getMonth() + 1;
+    var day = forReserveDate.getDate();
+
+    var hour = forReserveDate.getHours();
+    var hourStr = '';
+    if (hour < 10) {
+      hourStr = '0' + hour;
+    }
+    var min = forReserveDate.getMinutes();
+    var minStr = '';
+    if (min < 10) {
+      minStr = '0' + min;
+    }
+
+    this.reserveTime.month = year + '/' + month + '/' + day;
+    this.reserveTime.timeStarts = hourStr + ':' + minStr
+    this.reserveTime.duration = 1.0;
   }
 
   processOrder() {
@@ -52,7 +74,7 @@ export class ReservePage {
 
     let body = new URLSearchParams();
     body.set('username', this.global.USER_NAME);
-    body.set('location', this.reserveTime.month); // TODO: Where I get the location
+    body.set('location', this.navParams.get('location_name')); // TODO: tmp key for accessing
     body.set('reservation_date', this.reserveTime.month + ' ' + this.reserveTime.timeStarts);
     body.set('reservations_space_hold', String(this.reserveTime.duration * 60))
 
