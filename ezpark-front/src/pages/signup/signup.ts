@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController} from 'ionic-angular';
-import { Http, RequestOptions} from '@angular/http';
+import { IonicPage, NavController, LoadingController, AlertController} from 'ionic-angular';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Global } from '../../app/global';
 import { HomePage } from '../home/home';
-
 /**
  * Generated class for the SignupPage page.
  *
@@ -29,7 +27,6 @@ export class SignupPage {
   homePage = HomePage;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
               public global:Global,
               private http: HttpClient,
               private loadingCtrl: LoadingController,

@@ -1,6 +1,6 @@
 {
   "name": "ezpark",
-  "app_id": "",
+  "app_id": "ios.ezpark.com",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

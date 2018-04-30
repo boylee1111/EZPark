@@ -2,9 +2,15 @@ page-home {
   #main-page {
     background-color: #017FFF;
 
+    .fixed-content{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     #logo{
       width: 60%;
-      margin: 35% auto;
+      margin: 15% auto;
       display: block;
     }
 

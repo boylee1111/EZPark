@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="ios.ezpark.com" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ezpark</name>
-    <description>An awesome Ionic/Cordova app.</description>
+    <description>EzPark application for IOT final project.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
     <access origin="*" />
@@ -85,4 +85,16 @@
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate you" />
     </plugin>
     <plugin name="cordova-plugin-advanced-http" spec="^1.11.1" />
+    <allow-navigation href="http://192.168.1.156:8101" />
+    <plugin name="cordova-plugin-googleplus" spec="~5.3.0">
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.303949293945-sti7rv70nmmrln6qasm20j8e3rn36h3b" />
+        <variable name="WEB_APPLICATION_CLIENT_ID" value="303949293945-mtg9q5t9fb3bpn26v1ra8759jip6emn0.apps.googleusercontent.com" />
+    </plugin>
+    <engine name="ios" spec="~4.5.4" />
+    <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^4.2.0" />
+    <plugin name="cordova-plugin-facebook4" spec="^2.0.1">
+        <variable name="APP_ID" value="433161433801218" />
+        <variable name="APP_NAME" value="ezpark" />
+        <variable name="ANDROID_SDK_VERSION" value="4.+" />
+    </plugin>
 </widget>

@@ -43,7 +43,7 @@ public class DBHttpServlet extends HttpServlet {
     }
 
     void setAccessControlHeaders(HttpServletResponse resp) {
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:8100");
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
     }

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
 import { ReservePage } from '../reserve/reserve';
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+
 
 /**
  * Generated class for the HistoryPage page.
@@ -21,16 +23,19 @@ export class HistoryPage {
   public reservations = [
   {
     location: "Carnegie Mellon University",
+    center: {lat: 40.44281, lng: -79.943025},
     time: "Feb 28 2018, 7:43 AM",
     duration: 1
   },
   {
     location: "Carnegie Library of Pittsburgh",
+    center: {lat: 40.44281, lng: -79.943025},
     time: "March 1 2018, 8:50 AM",
     duration: 2
   },
   {
     location: "Walnut Street, Shady Side",
+    center: {lat: 40.45109460901854, lng: -79.93334770202637},
     time: "March 1 2018, 5:20 PM",
     duration: 0.5
   },
@@ -46,7 +51,10 @@ export class HistoryPage {
 
   history: string = "ongoing";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private alertCtrl: AlertController,
+              private launchNavigator: LaunchNavigator) {
   }
 
   ionViewDidLoad() {
@@ -74,6 +82,21 @@ export class HistoryPage {
       ]
     });
     alert.present();
+  }
+
+  navigate(position) {
+    console.log(position);
+    let options:LaunchNavigatorOptions = {
+      destinationName: "My Parking Spot",
+      appSelection: {
+        list: [
+          this.launchNavigator.APP.GOOGLE_MAPS,
+          this.launchNavigator.APP.APPLE_MAPS
+        ]
+      }
+    };
+
+    this.launchNavigator.navigate([position['lat'], position['lng']], options);
   }
 
 }
