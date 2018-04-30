@@ -4,6 +4,9 @@ import { HomePage } from '../home/home';
 import { SignupPage } from '.././signup/signup';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Global } from '../../app/global';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+
 
 /**
  * Generated class for the SigninPage page.
@@ -31,15 +34,51 @@ export class SigninPage {
               public global:Global,
               private http: HttpClient,
               private loadingCtrl: LoadingController,
-              private alertCtrl: AlertController) {
+              private alertCtrl: AlertController,
+              private googlePlus: GooglePlus,
+              private fb: Facebook) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SigninPage');
   }
 
+  fsignin() {
+    console.log("Signin with fb");
+    this.fb.login(['public_profile', 'user_friends', 'email'])
+      .then((res: FacebookLoginResponse) => {
+        console.log('Logged into Facebook!', res);
+        this.global.ACCESS_TOKEN = res.authResponse.accessToken;
+        this.navCtrl.push(this.homePage).then(() => {
+          let from = 0;
+          let to = this.navCtrl.length() - 1;
+          this.navCtrl.remove(from, to - from);
+        });
+
+      }).catch(err => {
+        console.log('Error logging into Facebook', err);
+        this.showAlert("Oooops! an Error occurred when making the request. Please check your connection.");
+      });
+  }
+
   gsignin() {
     console.log("Signin with google");
+    this.googlePlus.login({})
+      .then(res => {
+        console.log(res);
+        this.global.USER_NAME = res['displayName'];
+        this.global.ACCESS_TOKEN = res['accessToken'];
+        this.navCtrl.push(this.homePage).then(() => {
+          let from = 0;
+          let to = this.navCtrl.length() - 1;
+          this.navCtrl.remove(from, to - from);
+        });
+
+      })
+      .catch(err => {
+        console.error(err);
+        this.showAlert("Oooops! an Error occurred when making the request. Please check your connection.");
+      });
   }
 
   signin() {
