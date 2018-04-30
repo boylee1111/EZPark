@@ -70,11 +70,12 @@
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.303949293945-sti7rv70nmmrln6qasm20j8e3rn36h3b",
         "WEB_APPLICATION_CLIENT_ID": "303949293945-mtg9q5t9fb3bpn26v1ra8759jip6emn0.apps.googleusercontent.com"
       },
+      "uk.co.workingedge.phonegap.plugin.launchnavigator": {},
       "cordova-plugin-facebook4": {
         "APP_ID": "433161433801218",
-        "APP_NAME": "ezpark--save"
-      },
-      "uk.co.workingedge.phonegap.plugin.launchnavigator": {}
+        "APP_NAME": "ezpark",
+        "ANDROID_SDK_VERSION": "4.+"
+      }
     },
     "platforms": [
       "ios"
