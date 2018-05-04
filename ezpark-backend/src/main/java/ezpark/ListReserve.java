@@ -90,9 +90,11 @@ public class ListReserve extends DBHttpServlet {
                     "location", reservationsSet.getString("location"));
             reservationJson.put(
                     "reservation_date", dateFormat.format(
-                            reservationsSet.getDate("time")));
+                            reservationsSet.getTimestamp("time")));
             reservationJson.put(
                     "reservation_space_hold", reservationsSet.getInt("space_hold_minutes"));
+            reservationJson.put(
+                    "is_canceled", reservationsSet.getInt("isCanceled"));
             reservationJsonArray.put(reservationJson);
         }
 
