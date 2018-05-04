@@ -13,6 +13,12 @@ Frontend solution is based on iOS platform, which proivide user signup, login, r
 3. `npm install`
 4. `ionic serve`
 
+### Libraries
+
+- [Google Map: Javascript](https://developers.google.com/maps/documentation/javascript/tutorial)
+- [Facebook Authentication](https://developers.facebook.com/docs/facebook-login)
+- [Google+ Platform](https://developers.google.com/+/)
+
 ## Backend
 
 Backend solution is implemented with Java that processes parking lots information from garage system and provides RESTful API services to frontend mobile.
