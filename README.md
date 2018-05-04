@@ -23,6 +23,17 @@ Frontend solution is based on iOS platform, which proivide user signup, login, r
 
 Backend solution is implemented with Java that processes parking lots information from garage system and provides RESTful API services to frontend mobile.
 
+### Database Schema
+
+[SQL](https://github.com/mikeYng/IOT_finalProject/blob/master/ezpark-backend/ezpark.sql)
+
+### Database Environment Setting
+
+```
+export $sqlusername=<sql username>
+export $sqlpassword=<sql password>
+```
+
 ### Installation
 
 - Install [Maven](https://maven.apache.org)
