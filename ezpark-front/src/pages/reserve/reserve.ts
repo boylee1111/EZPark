@@ -74,7 +74,7 @@ export class ReservePage {
 
     let body = new URLSearchParams();
     body.set('username', this.global.USER_NAME);
-    body.set('location', this.navParams.get('location_name')); // TODO: tmp key for accessing
+    body.set('location', this.navParams.get('location'));
     body.set('reservation_date', this.reserveTime.month + ' ' + this.reserveTime.timeStarts);
     body.set('reservations_space_hold', String(this.reserveTime.duration * 60))
 
