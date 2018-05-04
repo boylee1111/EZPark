@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -68,13 +69,49 @@ public class CancelReserve extends DBHttpServlet {
     }
 
     private boolean delete(String id, Connection conn) throws SQLException {
-        String updateQuery =
-                "UPDATE reservation SET isCanceled=true WHERE id=?;";
-        PreparedStatement preparedStatement =
-                conn.prepareStatement(updateQuery);
-        preparedStatement.setLong(1, Long.parseLong(id));
+        String updateReserveQuery = "UPDATE reservation SET isCanceled=1 WHERE id=?;";
+        PreparedStatement updateReservationPreparedStatement = conn.prepareStatement(updateReserveQuery);
+        updateReservationPreparedStatement.setLong(1, Long.parseLong(id));
 
-        preparedStatement.executeUpdate();
+        updateReservationPreparedStatement.executeUpdate();
+
+        String searchQuery = "SELECT * FROM reservation WHERE id=?;";
+
+        PreparedStatement getReservationPreparedStatement = conn.prepareStatement(searchQuery);
+        getReservationPreparedStatement.setLong(1, Long.parseLong(id));
+
+        ResultSet reservationSet = getReservationPreparedStatement.executeQuery();
+
+        String location = "";
+        if (reservationSet.next()) {
+            location = reservationSet.getString("location");
+        }
+
+        if (location.isEmpty()) {
+            return false;
+        }
+
+        String locationQuery = "SELECT * FROM spot WHERE location_name=?;";
+        PreparedStatement locationPreparedStatement = conn.prepareStatement(locationQuery);
+        locationPreparedStatement.setString(1, location);
+        ResultSet spotSet = locationPreparedStatement.executeQuery();
+
+        int availableSpots = -1;
+        if (spotSet.next()) {
+            availableSpots = spotSet.getInt("available_spots");
+        }
+
+        if (availableSpots == -1) {
+            return false;
+        }
+
+        // Update available spot
+        String updateSpotQuery = "UPDATE spot SET available_spots=? WHERE location_name=?;";
+        PreparedStatement updatePrepareStatement = conn.prepareStatement(updateSpotQuery);
+        updatePrepareStatement.setInt(1, availableSpots + 1);
+        updatePrepareStatement.setString(2, location);
+        updatePrepareStatement.executeUpdate();
+
         return true;
     }
 }

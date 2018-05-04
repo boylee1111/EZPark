@@ -71,8 +71,7 @@ public class GetReserve extends DBHttpServlet {
     }
 
     private JSONObject getReservation(String id, Connection conn) throws SQLException {
-        String searchQuery =
-                "SELECT * FROM reservation WHERE id=? and isCanceled=0;";
+        String searchQuery = "SELECT * FROM reservation WHERE id=? and isCanceled=0;";
 
         PreparedStatement preparedStatement = conn.prepareStatement(searchQuery);
         preparedStatement.setLong(1, Long.parseLong(id));
@@ -84,13 +83,9 @@ public class GetReserve extends DBHttpServlet {
         if (reservationSet.next()) {
             JSONObject reservationJson = new JSONObject();
             reservationJson.put("reservation_id", reservationSet.getInt("id"));
-            reservationJson.put(
-                    "location", reservationSet.getString("location"));
-            reservationJson.put(
-                    "reservation_date", dateFormat.format(
-                            reservationSet.getDate("time")));
-            reservationJson.put(
-                    "reservation_space_hold", reservationSet.getInt("space_hold_minutes"));
+            reservationJson.put("location", reservationSet.getString("location"));
+            reservationJson.put("reservation_date", dateFormat.format(reservationSet.getDate("time")));
+            reservationJson.put("reservation_space_hold", reservationSet.getInt("space_hold_minutes"));
             return reservationJson;
         }
         return null;

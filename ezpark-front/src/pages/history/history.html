@@ -53,10 +53,13 @@
                     <!-- <p>2 days later</p> -->
                 </ion-item>
 
-                <ion-item actions (click)="presentConfirm(resv.id)">
-                    <button ion-button outline item-end color="danger">
-            Cancel Reservation
-          </button>
+                <ion-item actions>
+                    <button (click)="presentConfirm(resv.id)" ion-button outline item-end color="danger">
+                      Cancel Reservation
+                    </button>
+                    <button (click)="showReport()"ion-button outline item-end color="danger">
+                      Report
+                    </button>
                 </ion-item>
             </ion-card>
         </ion-list>

@@ -56,6 +56,7 @@ export class SigninPage {
         console.log('Logged into Facebook!', res);
         loader.dismiss();
 
+        this.global.USER_NAME = "Iot";
         this.global.ACCESS_TOKEN = res.authResponse.accessToken;
         this.navCtrl.push(this.homePage).then(() => {
           let from = 0;
@@ -82,7 +83,7 @@ export class SigninPage {
       .then(res => {
         console.log(res);
         loader.dismiss();
-        this.global.USER_NAME = res['displayName'];
+        this.global.USER_NAME = "Iot";
         this.global.ACCESS_TOKEN = res['accessToken'];
         this.navCtrl.push(this.homePage).then(() => {
           let from = 0;

@@ -2,6 +2,12 @@ page-history {
   .search-bar {
     padding: 15px 20px;
   }
+
+  ion-label{
+    word-break: break-all;
+    white-space: normal;
+  }
+
   .adv-map{
     .crop{
       height: 200px;

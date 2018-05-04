@@ -72,10 +72,8 @@ public class ListReserve extends DBHttpServlet {
     }
 
     private JSONArray listReservations(String username, Connection conn) throws SQLException {
-        String searchQuery =
-                "SELECT * FROM reservation WHERE username=?;";
-        PreparedStatement preparedStatement =
-                conn.prepareStatement(searchQuery);
+        String searchQuery = "SELECT * FROM reservation WHERE username=? ORDER BY time DESC;";
+        PreparedStatement preparedStatement = conn.prepareStatement(searchQuery);
         preparedStatement.setString(1, username);
 
         ResultSet reservationsSet = preparedStatement.executeQuery();
@@ -86,15 +84,10 @@ public class ListReserve extends DBHttpServlet {
         while (reservationsSet.next()) {
             JSONObject reservationJson = new JSONObject();
             reservationJson.put("reservation_id", reservationsSet.getInt("id"));
-            reservationJson.put(
-                    "location", reservationsSet.getString("location"));
-            reservationJson.put(
-                    "reservation_date", dateFormat.format(
-                            reservationsSet.getTimestamp("time")));
-            reservationJson.put(
-                    "reservation_space_hold", reservationsSet.getInt("space_hold_minutes"));
-            reservationJson.put(
-                    "is_canceled", reservationsSet.getInt("isCanceled"));
+            reservationJson.put("location", reservationsSet.getString("location"));
+            reservationJson.put("reservation_date", dateFormat.format(reservationsSet.getTimestamp("time")));
+            reservationJson.put("reservation_space_hold", reservationsSet.getInt("space_hold_minutes"));
+            reservationJson.put("is_canceled", reservationsSet.getInt("isCanceled"));
             reservationJsonArray.put(reservationJson);
         }
 

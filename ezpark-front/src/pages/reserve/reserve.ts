@@ -27,6 +27,7 @@ export class ReservePage {
   };
 
   price = 0.0;
+  location = "";
 
   successPage = SuccessPage;
 
@@ -41,6 +42,9 @@ export class ReservePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReservePage');
+
+    this.location = this.navParams.get('location');
+    console.log(this.location);
 
     this.price = (this.navParams.get('price') == undefined ? 3.0 : this.navParams.get('price'));
     var forReserveDate = new Date();

@@ -122,6 +122,59 @@ export class HistoryPage {
       });
   }
 
+  showReport() {
+    let alert = this.alertCtrl.create({
+      title: 'Report',
+      message: 'We will reach back to you soon!',
+      inputs: [
+        {
+          type: 'checkbox',
+          label: 'No available spot',
+          value: 'value1',
+          checked: true
+        },
+
+        {
+          type: 'checkbox',
+          label: 'Issue with entrance',
+          value: 'value1',
+          checked: false
+        },
+
+        {
+          type: 'checkbox',
+          label: 'Issue with payment',
+          value: 'value1',
+          checked: false
+        },
+
+        {
+          type: 'checkbox',
+          label: 'Others',
+          value: 'value1',
+          checked: false
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Ok',
+          role: 'cancel',
+          handler: data => {
+            this.showAlert("Thank you for your feedback, we will call you soon!")
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   presentConfirm(id) {
     console.log(id);
     let alert = this.alertCtrl.create({

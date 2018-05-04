@@ -50,7 +50,6 @@ export class MapPage {
               private global:Global) {
   }
 
-
   ionViewDidLoad() {
 
     let loader = this.loadingCtrl.create({
@@ -74,6 +73,12 @@ export class MapPage {
     //    loader.dismiss();
     //    let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     //    this.map.setCenter(latLng);
+    //
+    //    new google.maps.Marker({
+    //      position: latLng,
+    //      map: map,
+    //      icon: im
+    //    });
     //
     //  }, (err) => {
     //    loader.dismiss();
