@@ -36,6 +36,8 @@ public class ListReserve extends DBHttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
+        setAccessControlHeaders(resp);
+
         JSONObject result = new JSONObject();
         PrintWriter writer = resp.getWriter();
         String username = req.getParameter("username");

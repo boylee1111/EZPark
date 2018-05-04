@@ -1,4 +1,3 @@
-import { ReserveItem, Center } from './history';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
@@ -15,15 +14,11 @@ import { Global } from '../../app/global';
  */
 
 declare module struct {
-  export interface Center {
-    lat: number;
-    lng: number;
-  }
-  export interface ReserveItem {
+  export interface ReservationItem {
+    reservation_id: number;
     location: string;
-    center: Center;
-    time: string;
-    duration: number;
+    reservation_date: string;
+    reservation_space_hold: number;
   }
 }
 
@@ -35,6 +30,7 @@ declare module struct {
 export class HistoryPage {
 
   reservePage = ReservePage;
+  listReservations: struct.ReservationItem[];
 
   public reservations = [
     {
@@ -98,18 +94,21 @@ export class HistoryPage {
       })
     };
 
+    console.log(body.toString());
+
     this.http.post(link, body.toString(), httpOptions)
       .subscribe(resp => {
         loader.dismiss();
-        console.log(resp);
+        this.listReservations = resp['reservations'];
 
-        for (var reservation in resp['reservations']) {
-          var reserveItem = new ReserveItem({
-            location: reservation['location'],
+        for (let reservation of this.listReservations) {
+          console.log(reservation);
+          var reserveItem = {
+            location: reservation.location,
             center: { lat: 40.45109460901854, lng: -79.93334770202637 },
-            time: reservation['reservation_date'],
-            duration: reservation['reservation_space_hold'] / 60
-          });
+            time: reservation.reservation_date,
+            duration: reservation.reservation_space_hold / 60
+          };
           this.reservations.push(reserveItem);
         }
       });
