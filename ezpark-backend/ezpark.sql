@@ -28,6 +28,7 @@ CREATE TABLE `reservation` (
   `location` varchar(255) NOT NULL,
   `time` datetime NOT NULL,
   `space_hold_minutes` int(11) NOT NULL,
+  `isCanceled` int(11) DEFAULT 0 NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -49,11 +50,12 @@ DROP TABLE IF EXISTS `spot`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `spot` (
-  `x` decimal(10,0) NOT NULL,
-  `y` decimal(10,0) NOT NULL,
+  `x` decimal(20, 15) NOT NULL,
+  `y` decimal(20, 15) NOT NULL,
   `location_name` varchar(255) NOT NULL,
   `price_per_hour` decimal(10,0) NOT NULL,
   `available_spots` int(11) NOT NULL,
+  `radius` decimal(10, 5) NOT NULL,
   PRIMARY KEY (`location_name`),
   UNIQUE KEY `location_name_UNIQUE` (`location_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
