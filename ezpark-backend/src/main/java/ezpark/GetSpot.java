@@ -35,27 +35,36 @@ public class GetSpot extends DBHttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
+        setAccessControlHeaders(resp);
+
         JSONObject result = new JSONObject();
         PrintWriter writer = resp.getWriter();
-        int x;
-        int y;
+        Integer x;
+        Integer y;
         try {
             x = Integer.parseInt(req.getParameter("x"));
             y = Integer.parseInt(req.getParameter("y"));
         } catch (Exception e) {
-            result.put("spots", "illegal parameters");
-            writer.write(result.toString());
-            writer.close();
-            return;
+            x = null;
+            y = null;
         }
+
         try {
+            JSONArray list;
             Connection conn = cpds.getConnection();
-            JSONArray list = getSpots(x, y, conn);
+
+            if (x == null || y == null) {
+                list = getSpotsList(conn);
+            } else {
+                list = getSpots(x, y, conn);
+            }
             result.put("spots", list);
             writer.write(result.toString());
             writer.close();
             conn.close();
         } catch (SQLException e) {
+            result.put("spots", new JSONArray());
+            writer.write(result.toString());
             e.printStackTrace();
         }
     }
@@ -66,9 +75,28 @@ public class GetSpot extends DBHttpServlet {
         doGet(req, resp);
     }
 
+    private JSONArray getSpotsList(Connection conn) throws SQLException {
+        String searchQuery = "SELECT * FROM spot;";
+        PreparedStatement preparedStatement = conn.prepareStatement(searchQuery);
+        ResultSet spotsSet = preparedStatement.executeQuery();
+
+        JSONArray spotsJsonArray = new JSONArray();
+        while (spotsSet.next()) {
+            JSONObject spotJson = new JSONObject();
+            spotJson.put("x", spotsSet.getDouble("x"));
+            spotJson.put("y", spotsSet.getDouble("y"));
+            spotJson.put("location", spotsSet.getString("location_name"));
+            spotJson.put("price_per_hour", spotsSet.getDouble("price_per_hour"));
+            spotJson.put("available_spots", spotsSet.getDouble("available_spots"));
+            spotJson.put("radius", spotsSet.getDouble("radius"));
+            spotsJsonArray.put(spotJson);
+        }
+
+        return spotsJsonArray;
+    }
+
     private JSONArray getSpots(int x, int y, Connection conn) throws SQLException {
-        String searchQuery =
-                "SELECT * FROM spot WHERE x > ? and x < ? and y > ? and y < ?;";
+        String searchQuery = "SELECT * FROM spot WHERE x > ? and x < ? and y > ? and y < ?;";
         PreparedStatement preparedStatement = conn.prepareStatement(searchQuery);
         preparedStatement.setDouble(1, x - COORDINATE_OFFSET);
         preparedStatement.setDouble(2, x + COORDINATE_OFFSET);
@@ -80,11 +108,12 @@ public class GetSpot extends DBHttpServlet {
         JSONArray spotsJsonArray = new JSONArray();
         while (spotsSet.next()) {
             JSONObject spotJson = new JSONObject();
+            spotJson.put("x", spotsSet.getDouble("x"));
+            spotJson.put("y", spotsSet.getDouble("y"));
             spotJson.put("location", spotsSet.getString("location_name"));
-            spotJson.put(
-                    "price_per_hour", spotsSet.getDouble("price_per_hour"));
-            spotJson.put(
-                    "available_spots", spotsSet.getDouble("available_spots"));
+            spotJson.put("price_per_hour", spotsSet.getDouble("price_per_hour"));
+            spotJson.put("available_spots", spotsSet.getDouble("available_spots"));
+            spotJson.put("radius", spotsSet.getDouble("radius"));
             spotsJsonArray.put(spotJson);
         }
 
