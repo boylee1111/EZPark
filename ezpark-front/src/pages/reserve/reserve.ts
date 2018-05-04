@@ -37,7 +37,6 @@ export class ReservePage {
     private http: HttpClient,
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController) {
-
   }
 
   ionViewDidLoad() {

@@ -20,7 +20,7 @@ declare module struct {
     location: string;
     reservation_date: string;
     reservation_space_hold: number;
-    isCanceled: number;
+    is_canceled: number;
   }
 }
 
@@ -114,7 +114,7 @@ export class HistoryPage {
             time: reservation.reservation_date,
             duration: reservation.reservation_space_hold / 60
           };
-          if (reservation.isCanceled == 0) {
+          if (reservation.is_canceled == 0) {
             this.reservations.push(reserveItem);
           } else {
             this.completes.push(reserveItem);
