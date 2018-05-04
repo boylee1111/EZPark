@@ -42,7 +42,7 @@ export class ReservePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReservePage');
 
-    this.price = this.navParams.get('price');
+    this.price = (this.navParams.get('price') == undefined ? 3.0 : this.navParams.get('price'));
     var forReserveDate = new Date();
     forReserveDate.setTime(forReserveDate.getTime() + (30 * 60 * 1000));
 
