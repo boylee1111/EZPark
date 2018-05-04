@@ -32,7 +32,7 @@ Backend solution is implemented with Java that processes parking lots informatio
 
 ## Authors
 - Boyi Li
-- Lingxuan Yang
+- Linxuan Yang
 - Ting Pan
 
 See also the list of [contributors](https://github.com/mikeYng/IOT_finalProject/graphs/contributors) who participated in this project.
