@@ -73,7 +73,7 @@ public class ListReserve extends DBHttpServlet {
 
     private JSONArray listReservations(String username, Connection conn) throws SQLException {
         String searchQuery =
-                "SELECT * FROM reservation WHERE username=? and isCanceled=0;";
+                "SELECT * FROM reservation WHERE username=?;";
         PreparedStatement preparedStatement =
                 conn.prepareStatement(searchQuery);
         preparedStatement.setString(1, username);
