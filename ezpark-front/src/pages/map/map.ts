@@ -1,5 +1,7 @@
 import { Component, ViewChild, ElementRef} from '@angular/core';
 import { PopoverController, IonicPage, NavController, LoadingController, NavParams } from 'ionic-angular';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { Global } from '../../app/global';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ReservePage } from '../reserve/reserve';
 import { SettingsPage } from '../settings/settings'
@@ -12,6 +14,17 @@ import { SettingsPage } from '../settings/settings'
  */
 
 declare var google;
+
+declare module struct {
+  export interface Spot {
+    price_per_hour: number;
+    available_spots: number;
+    x: number;
+    y: number;
+    location: string;
+    radius: number;
+  }
+}
 
 @IonicPage()
 @Component({
@@ -27,43 +40,14 @@ export class MapPage {
   map: any;
   reservePage = ReservePage;
   settingPage = SettingsPage;
-
-  parkMap = {
-    CMU: {
-      location: "Carnegine Mellon University, 5000 Forbes Ave",
-      center: {lat: 40.44281, lng: -79.943025},
-      avalibility: 32,
-      radius: 3
-    },
-
-    Lib: {
-      location: "Carnvegie Library of Pittsburgh",
-      center: {lat: 40.44283191510726, lng: -79.95044946670532},
-      avalibility: 51,
-      radius: 1.5
-    },
-
-    Shady: {
-      location: "Walnut St, Pittsburgh",
-      center: {lat: 40.45109460901854, lng: -79.93334770202637},
-      avalibility: 45,
-      radius: 2
-    },
-
-    Park: {
-      location: "Schenley Park",
-      center: {lat: 40.434862188806825, lng: -79.94248867034912},
-      avalibility: 78,
-      radius: 4
-    }
-  }
-
-
+  spots: struct.Spot[];
 
   constructor(public navCtrl:NavController,
               public navParams:NavParams,
               private geolocation:Geolocation,
-              public loadingCtrl:LoadingController) {
+              public loadingCtrl:LoadingController,
+              private http: HttpClient,
+              private global:Global) {
   }
 
 
@@ -74,11 +58,16 @@ export class MapPage {
     });
 
     loader.present();
-
     this.initMap();
-    this.loadCircle();
 
-    loader.dismiss();
+    let link = this.global.ROOT_URL + "/spots/list";
+
+    this.http.get(link)
+      .subscribe((resp: struct.Spot[])=> {
+        this.spots = resp['spots'];
+        this.loadCircle();
+        loader.dismiss();
+      });
 
     //this.geolocation.getCurrentPosition()
     //  .then((position) => {
@@ -92,7 +81,6 @@ export class MapPage {
     //  });
   }
 
-
   initMap() {
 
     let latLng = new google.maps.LatLng(40.44281, -79.943025);
@@ -103,205 +91,6 @@ export class MapPage {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true,
       clickableIcons: false,
-      //styles: [
-      //  {
-      //    "elementType": "geometry",
-      //    "stylers": [
-      //      {
-      //        "color": "#fcf6ec"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "administrative",
-      //    "elementType": "geometry.stroke",
-      //    "stylers": [
-      //      {
-      //        "color": "#c9b2a6"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "administrative.land_parcel",
-      //    "elementType": "geometry.stroke",
-      //    "stylers": [
-      //      {
-      //        "color": "#dcd2be"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "administrative.land_parcel",
-      //    "elementType": "labels.text.fill",
-      //    "stylers": [
-      //      {
-      //        "color": "#ae9e90"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "landscape.natural",
-      //    "elementType": "geometry",
-      //    "stylers": [
-      //      {
-      //        "color": "#dbeccc"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "poi",
-      //    "elementType": "geometry",
-      //    "stylers": [
-      //      {
-      //        "color": "#fbeed7"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "poi",
-      //    "elementType": "labels.text.fill",
-      //    "stylers": [
-      //      {
-      //        "color": "#93817c"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "poi.park",
-      //    "elementType": "geometry.fill",
-      //    "stylers": [
-      //      {
-      //        "color": "#b8e39c"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "poi.park",
-      //    "elementType": "labels.text.fill",
-      //    "stylers": [
-      //      {
-      //        "color": "#447530"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "road",
-      //    "elementType": "geometry",
-      //    "stylers": [
-      //      {
-      //        "color": "#f5f1e6"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "road.arterial",
-      //    "elementType": "geometry",
-      //    "stylers": [
-      //      {
-      //        "color": "#ffffff"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "road.arterial",
-      //    "elementType": "geometry.stroke",
-      //    "stylers": [
-      //      {
-      //        "color": "#ffffff"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "road.highway",
-      //    "elementType": "geometry",
-      //    "stylers": [
-      //      {
-      //        "color": "#ffe56c"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "road.highway",
-      //    "elementType": "geometry.stroke",
-      //    "stylers": [
-      //      {
-      //        "color": "#e6b437"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "road.highway.controlled_access",
-      //    "elementType": "geometry",
-      //    "stylers": [
-      //      {
-      //        "color": "#faa786"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "road.local",
-      //    "elementType": "geometry",
-      //    "stylers": [
-      //      {
-      //        "color": "#dfd7cd"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "road.local",
-      //    "elementType": "labels.text.fill",
-      //    "stylers": [
-      //      {
-      //        "color": "#806b63"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "transit.line",
-      //    "elementType": "geometry",
-      //    "stylers": [
-      //      {
-      //        "color": "#dfd2ae"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "transit.line",
-      //    "elementType": "labels.text.fill",
-      //    "stylers": [
-      //      {
-      //        "color": "#8f7d77"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "transit.station",
-      //    "elementType": "geometry",
-      //    "stylers": [
-      //      {
-      //        "color": "#f8c3a6"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "water",
-      //    "elementType": "geometry.fill",
-      //    "stylers": [
-      //      {
-      //        "color": "#a3dfed"
-      //      }
-      //    ]
-      //  },
-      //  {
-      //    "featureType": "water",
-      //    "elementType": "labels.text.fill",
-      //    "stylers": [
-      //      {
-      //        "color": "#92998d"
-      //      }
-      //    ]
-      //  }
-      //]
     };
 
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
@@ -310,18 +99,19 @@ export class MapPage {
 
   loadCircle() {
 
-    for (let park in this.parkMap) {
+    for (let park of this.spots) {
       // Add the circle for this city to the map.
 
-      let circleColor = this.parkMap[park].avalibility >= 50 ? "#2AC1E4" : "#F7896E";
+      let circleColor = park.available_spots >= 50 ? "#2AC1E4" : "#F7896E";
+      let center = {lat: park.x, lng: park.y};
 
       let circle = new google.maps.Circle({
         strokeWeight: 0,
         fillColor: circleColor,
         fillOpacity: 0.35,
         map: this.map,
-        center: this.parkMap[park].center,
-        radius: this.parkMap[park].radius * 80
+        center: center,
+        radius: park.radius * 80
       });
 
       new google.maps.Circle({
@@ -329,22 +119,25 @@ export class MapPage {
         fillColor: circleColor,
         fillOpacity: 0.35,
         map: this.map,
-        center: this.parkMap[park].center,
-        radius: this.parkMap[park].radius * 50
+        center: center,
+        radius: park.radius * 50
       });
 
       let marker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
-        position: this.parkMap[park].center,
+        position: center,
         color: circleColor,
         label: {
-          text: "" +  this.parkMap[park].avalibility,
+          text: "" +  park.available_spots,
           color: "white"
         }
       });
 
-      let content = "<div class='map-window'><p>"+ this.parkMap[park].location + "</p><p>Price: $5</p> <button class='reserve-button'>Reserve Now, " + this.parkMap[park].avalibility + " Available</button></div>";
+      let content = "<div class='map-window'><p>" + park.location + "</p><p>Price: $" + park.price_per_hour +
+        "</p> <button class='reserve-button' data-location='" +
+        park.location +"'>Reserve Now, " + park.available_spots +
+        " Available</button></div>";
 
       this.addInfoWindow(marker, content, park);
     }
@@ -358,8 +151,13 @@ export class MapPage {
     });
 
     google.maps.event.addListenerOnce(infoWindow, 'domready', (e) => {
-      document.getElementsByClassName('reserve-button')[0].addEventListener('click', () => {
-        this.navCtrl.push(this.reservePage);
+      document.getElementsByClassName('reserve-button')[0].addEventListener('click', (e: Event) => {
+
+        console.log("reserve: " + e.target['dataset'].location);
+
+        this.navCtrl.push(this.reservePage, {
+          location: e.target['dataset'].location
+        });
       });
     });
 
