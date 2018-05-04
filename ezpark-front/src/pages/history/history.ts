@@ -1,7 +1,10 @@
+import { ReserveItem, Center } from './history';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { ReservePage } from '../reserve/reserve';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { Global } from '../../app/global';
 
 
 /**
@@ -10,6 +13,19 @@ import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-na
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+
+declare module struct {
+  export interface Center {
+    lat: number;
+    lng: number;
+  }
+  export interface ReserveItem {
+    location: string;
+    center: Center;
+    time: string;
+    duration: number;
+  }
+}
 
 @IonicPage()
 @Component({
@@ -21,25 +37,25 @@ export class HistoryPage {
   reservePage = ReservePage;
 
   public reservations = [
-  {
-    location: "Carnegie Mellon University",
-    center: {lat: 40.44281, lng: -79.943025},
-    time: "Feb 28 2018, 7:43 AM",
-    duration: 1
-  },
-  {
-    location: "Carnegie Library of Pittsburgh",
-    center: {lat: 40.44281, lng: -79.943025},
-    time: "March 1 2018, 8:50 AM",
-    duration: 2
-  },
-  {
-    location: "Walnut Street, Shady Side",
-    center: {lat: 40.45109460901854, lng: -79.93334770202637},
-    time: "March 1 2018, 5:20 PM",
-    duration: 0.5
-  },
-];
+    {
+      location: "Carnegie Mellon University",
+      center: { lat: 40.44281, lng: -79.943025 },
+      time: "Feb 28 2018, 7:43 AM",
+      duration: 1
+    },
+    {
+      location: "Carnegie Library of Pittsburgh",
+      center: { lat: 40.44281, lng: -79.943025 },
+      time: "March 1 2018, 8:50 AM",
+      duration: 2
+    },
+    {
+      location: "Walnut Street, Shady Side",
+      center: { lat: 40.45109460901854, lng: -79.93334770202637 },
+      time: "March 1 2018, 5:20 PM",
+      duration: 0.5
+    },
+  ];
 
   public completes = [
     {
@@ -51,14 +67,52 @@ export class HistoryPage {
 
   history: string = "ongoing";
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              private alertCtrl: AlertController,
-              private launchNavigator: LaunchNavigator) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public global: Global,
+    private http: HttpClient,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
+    private launchNavigator: LaunchNavigator) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HistoryPage');
+    let loader = this.loadingCtrl.create({
+      content: "Processing..."
+    });
+
+    loader.present();
+
+    let link = this.global.ROOT_URL + "/reservations/list"
+
+    // for sending x-www-form-urlencoded type of data
+    let body = new URLSearchParams();
+    body.set('username', this.global.USER_NAME);
+
+    // setting headers
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      })
+    };
+
+    this.http.post(link, body.toString(), httpOptions)
+      .subscribe(resp => {
+        loader.dismiss();
+        console.log(resp);
+
+        for (var reservation in resp['reservations']) {
+          var reserveItem = new ReserveItem({
+            location: reservation['location'],
+            center: { lat: 40.45109460901854, lng: -79.93334770202637 },
+            time: reservation['reservation_date'],
+            duration: reservation['reservation_space_hold'] / 60
+          });
+          this.reservations.push(reserveItem);
+        }
+      });
   }
 
   presentConfirm() {
@@ -83,10 +137,9 @@ export class HistoryPage {
     });
     alert.present();
   }
-
   navigate(position) {
     console.log(position);
-    let options:LaunchNavigatorOptions = {
+    let options: LaunchNavigatorOptions = {
       destinationName: "My Parking Spot",
       appSelection: {
         list: [
@@ -98,5 +151,4 @@ export class HistoryPage {
 
     this.launchNavigator.navigate([position['lat'], position['lng']], options);
   }
-
 }
