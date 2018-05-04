@@ -136,7 +136,7 @@ export class MapPage {
 
       let content = "<div class='map-window'><p>" + park.location + "</p><p>Price: $" + park.price_per_hour +
         "</p> <button class='reserve-button' data-location='" +
-        park.location +"data-price="+ park.price_per_hour +"'>Reserve Now, " + park.available_spots +
+        park.location +"'data-price="+ park.price_per_hour +">Reserve Now, " + park.available_spots +
         " Available</button></div>";
 
       this.addInfoWindow(marker, content, park);
