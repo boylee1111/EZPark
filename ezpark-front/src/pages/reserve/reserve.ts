@@ -26,6 +26,8 @@ export class ReservePage {
     duration: 1.5
   };
 
+  price = 0.0;
+
   successPage = SuccessPage;
 
   constructor(
@@ -35,31 +37,42 @@ export class ReservePage {
     private http: HttpClient,
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController) {
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReservePage');
 
+    this.price = this.navParams.get('price');
     var forReserveDate = new Date();
     forReserveDate.setTime(forReserveDate.getTime() + (30 * 60 * 1000));
 
     var year = forReserveDate.getFullYear()
     var month = forReserveDate.getMonth() + 1;
+    var monthStr = String(month);
+    if (month < 10) {
+      monthStr = '0' + month;
+    }
+
     var day = forReserveDate.getDate();
+    var dayStr = String(day);
+    if (day < 10) {
+      dayStr = '0' + day;
+    }
 
     var hour = forReserveDate.getHours();
-    var hourStr = '';
+    var hourStr = String(hour);
     if (hour < 10) {
       hourStr = '0' + hour;
     }
     var min = forReserveDate.getMinutes();
-    var minStr = '';
+    var minStr = String(min);
     if (min < 10) {
       minStr = '0' + min;
     }
 
-    this.reserveTime.month = year + '/' + month + '/' + day;
-    this.reserveTime.timeStarts = hourStr + ':' + minStr
+    this.reserveTime.month = year + '-' + monthStr + '-' + dayStr;
+    this.reserveTime.timeStarts = hourStr + ':' + minStr;
     this.reserveTime.duration = 1.0;
   }
 
@@ -75,7 +88,7 @@ export class ReservePage {
     let body = new URLSearchParams();
     body.set('username', this.global.USER_NAME);
     body.set('location', this.navParams.get('location'));
-    body.set('reservation_date', this.reserveTime.month + ' ' + this.reserveTime.timeStarts);
+    body.set('reservation_date', this.reserveTime.month.replace('-', '/') + ' ' + this.reserveTime.timeStarts);
     body.set('reservations_space_hold', String(this.reserveTime.duration * 60))
 
     // setting headers

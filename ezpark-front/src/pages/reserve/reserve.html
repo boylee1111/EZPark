@@ -29,7 +29,7 @@
 
         <ion-item>
             <ion-label>Date</ion-label>
-            <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="reserveTime.month"></ion-datetime>
+            <ion-datetime displayFormat="MM DD YYYY" [(ngModel)]="reserveTime.month"></ion-datetime>
             <ion-icon name='calendar' item-start></ion-icon>
         </ion-item>
 
@@ -60,7 +60,7 @@
             <ion-icon name='pricetags' item-start></ion-icon>
             <ion-label>Total Price</ion-label>
             <ion-note color="primary" item-end>
-                {{reserveTime.duration * 0.5}} (0.5/hour)
+                {{reserveTime.duration * price}} ({{price}}/hour)
             </ion-note>
         </ion-item>
 
