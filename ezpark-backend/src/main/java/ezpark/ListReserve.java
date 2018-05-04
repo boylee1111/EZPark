@@ -36,6 +36,8 @@ public class ListReserve extends DBHttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
+        setAccessControlHeaders(resp);
+
         JSONObject result = new JSONObject();
         PrintWriter writer = resp.getWriter();
         String username = req.getParameter("username");
@@ -71,7 +73,7 @@ public class ListReserve extends DBHttpServlet {
 
     private JSONArray listReservations(String username, Connection conn) throws SQLException {
         String searchQuery =
-                "SELECT * FROM reservation WHERE username=? and isCanceled=0;";
+                "SELECT * FROM reservation WHERE username=?;";
         PreparedStatement preparedStatement =
                 conn.prepareStatement(searchQuery);
         preparedStatement.setString(1, username);
@@ -88,9 +90,11 @@ public class ListReserve extends DBHttpServlet {
                     "location", reservationsSet.getString("location"));
             reservationJson.put(
                     "reservation_date", dateFormat.format(
-                            reservationsSet.getDate("time")));
+                            reservationsSet.getTimestamp("time")));
             reservationJson.put(
                     "reservation_space_hold", reservationsSet.getInt("space_hold_minutes"));
+            reservationJson.put(
+                    "is_canceled", reservationsSet.getInt("isCanceled"));
             reservationJsonArray.put(reservationJson);
         }
 

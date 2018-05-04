@@ -32,6 +32,8 @@ public class CancelReserve extends DBHttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
+        setAccessControlHeaders(resp);
+
         JSONObject result = new JSONObject();
         PrintWriter writer = resp.getWriter();
         String id = req.getParameter("id");
@@ -67,7 +69,7 @@ public class CancelReserve extends DBHttpServlet {
 
     private boolean delete(String id, Connection conn) throws SQLException {
         String updateQuery =
-                "UPDATE reservations SET isCanceled=true WHERE id=?;";
+                "UPDATE reservation SET isCanceled=true WHERE id=?;";
         PreparedStatement preparedStatement =
                 conn.prepareStatement(updateQuery);
         preparedStatement.setLong(1, Long.parseLong(id));

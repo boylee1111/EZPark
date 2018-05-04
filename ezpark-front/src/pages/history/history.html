@@ -6,14 +6,14 @@
 -->
 <ion-header no-boder>
 
-  <ion-navbar>
-    <ion-title>My Reservation</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>My Reservation</ion-title>
+    </ion-navbar>
 
-  <ion-toolbar>
-    <ion-searchbar class="search-bar" placeholder="Find..">
-    </ion-searchbar>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-searchbar class="search-bar" placeholder="Find..">
+        </ion-searchbar>
+    </ion-toolbar>
 
 </ion-header>
 
@@ -22,74 +22,74 @@
 
 
     <ion-segment [(ngModel)]="history">
-      <ion-segment-button value="ongoing">
-        On Going
-      </ion-segment-button>
-      <ion-segment-button value="complete">
-        Completed
-      </ion-segment-button>
+        <ion-segment-button value="ongoing">
+            On Going
+        </ion-segment-button>
+        <ion-segment-button value="complete">
+            Completed
+        </ion-segment-button>
     </ion-segment>
 
-  <div [ngSwitch]="history">
-    <ion-list *ngSwitchCase="'ongoing'">
-      <ion-card *ngFor="let resv of reservations" class="adv-map">
-        <div class="crop" style="position: relative">
-          <img src="./assets/map.jpeg">
-          <ion-fab right top>
-            <button ion-fab class="fab-map" (click)="navigate(resv.center);">
+    <div [ngSwitch]="history">
+        <ion-list *ngSwitchCase="'ongoing'">
+            <ion-card *ngFor="let resv of reservations" class="adv-map">
+                <div class="crop" style="position: relative">
+                    <img src="./assets/map.jpeg">
+                    <ion-fab right top>
+                        <button ion-fab class="fab-map" (click)="navigate(resv.center);">
               <ion-icon name='pin'></ion-icon>
             </button>
-          </ion-fab>
-        </div>
+                    </ion-fab>
+                </div>
 
-        <ion-item class="reserve-detail">
-          <ion-icon no-lines name='pin' item-start></ion-icon>
-          <h2>{{resv.location}}</h2>
-        </ion-item>
+                <ion-item class="reserve-detail">
+                    <ion-icon no-lines name='pin' item-start></ion-icon>
+                    <h2>{{resv.location}}</h2>
+                </ion-item>
 
-        <ion-item class="reserve-detail">
-          <ion-icon no-lines name='calendar' item-start></ion-icon>
-          <h2>{{resv.time}}</h2>
-          <p>2 days later</p>
-        </ion-item>
+                <ion-item class="reserve-detail">
+                    <ion-icon no-lines name='calendar' item-start></ion-icon>
+                    <h2>{{resv.time}}</h2>
+                    <!-- <p>2 days later</p> -->
+                </ion-item>
 
-        <ion-item actions (click)="presentConfirm()">
-          <button ion-button outline item-end color="danger" >
+                <ion-item actions (click)="presentConfirm(resv.id)">
+                    <button ion-button outline item-end color="danger">
             Cancel Reservation
           </button>
-        </ion-item>
-      </ion-card>
-      </ion-list>
+                </ion-item>
+            </ion-card>
+        </ion-list>
 
-    <ion-list *ngSwitchCase="'complete'">
-      <ion-card *ngFor="let resv of completes" class="adv-map">
-        <div class="crop" style="position: relative">
-          <img src="./assets/map.jpeg">
-          <ion-fab right top>
-            <button ion-fab class="fab-map" color="Secondary">
+        <ion-list *ngSwitchCase="'complete'">
+            <ion-card *ngFor="let resv of completes" class="adv-map">
+                <div class="crop" style="position: relative">
+                    <img src="./assets/map.jpeg">
+                    <ion-fab right top>
+                        <button ion-fab class="fab-map" color="Secondary">
               <ion-icon name='checkmark-circle-outline'></ion-icon>
             </button>
-          </ion-fab>
-        </div>
+                    </ion-fab>
+                </div>
 
-        <ion-item class="reserve-detail">
-          <ion-icon no-lines name='pin' item-start></ion-icon>
-          <h2>{{resv.location}}</h2>
-        </ion-item>
+                <ion-item class="reserve-detail">
+                    <ion-icon no-lines name='pin' item-start></ion-icon>
+                    <h2>{{resv.location}}</h2>
+                </ion-item>
 
-        <ion-item class="reserve-detail">
-          <ion-icon no-lines name='calendar' item-start></ion-icon>
-          <h2>{{resv.time}}</h2>
-        </ion-item>
+                <ion-item class="reserve-detail">
+                    <ion-icon no-lines name='calendar' item-start></ion-icon>
+                    <h2>{{resv.time}}</h2>
+                </ion-item>
 
-        <ion-item actions [navPush]="reservePage">
-          <button ion-button outline color="primary" clear item-end>
+                <ion-item actions [navPush]="reservePage">
+                    <button ion-button outline color="primary" clear item-end>
             Reserve Again
           </button>
-        </ion-item>
-      </ion-card>
-    </ion-list>
+                </ion-item>
+            </ion-card>
+        </ion-list>
 
-  </div>
+    </div>
 
 </ion-content>
